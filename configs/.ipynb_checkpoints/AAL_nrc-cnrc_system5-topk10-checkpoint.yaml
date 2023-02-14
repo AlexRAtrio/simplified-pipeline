@@ -1,0 +1,80 @@
+# Where to save models
+save_data: /home/alexis.allemann/workspace/unisub/experiments/WP1/1_Benchmarking/experiments/vs/AAL_nrc-cnrc_system5-topk10/models
+
+# Vocabulary
+src_vocab: /home/alexis.allemann/workspace/data/wp1/bpe-vocab/hsb-cs-de.vocab
+share_vocab: true
+src_words_min_frequency: 2
+tgt_words_min_frequency: 2
+src_subword_type: bpe
+src_subword_model: ""
+subword_nbest: 1
+subword_alpha: 0.0
+src_seq_length: 501
+tgt_seq_length: 501
+
+# Prevent overwriting existing files in the folder
+overwrite: True
+
+# Corpus opts:
+data:
+    corpus_1:
+        path_src: /home/alexis.allemann/workspace/data/wp1/v2/topk10/c3-d4.de.bpe_encoded.cleaned.shuffled
+        path_tgt: /home/alexis.allemann/workspace/data/wp1/v2/topk10/c4-c5.hsb.bpe_encoded.cleaned.shuffled
+        transforms: [filtertoolong]
+        weight: 1
+    valid:
+        path_src: /home/alexis.allemann/workspace/data/wp1/test/devel.hsb-de.de.bpe_encoded 
+        path_tgt: /home/alexis.allemann/workspace/data/wp1/test/devel.hsb-de.hsb.bpe_encoded 
+        transforms: []
+
+# Set number of GPUs
+world_size: 2
+gpu_ranks: [0,1]
+
+# General opts
+# Where to save the checkpoints
+save_model: /home/alexis.allemann/workspace/unisub/experiments/WP1/1_Benchmarking/experiments/v2/AAL_nrc-cnrc_system5-topk10/models/AAL_nrc-cnrc_system5-topk10
+save_checkpoint_steps: 4000
+train_steps: 548000 # careful if reset_optim, just the nb remaining!
+valid_steps: 4000
+report_every: 4000
+train_from: /home/alexis.allemann/workspace/unisub/experiments/WP1/1_Benchmarking/experiments/v2/AAL_nrc-cnrc_system3/models/AAL_nrc-cnrc_system3_step_448000.pt
+# early_stopping: 32
+
+# Batching
+batch_type: tokens
+batch_size: 8192
+valid_batch_size: 200
+max_generator_batches: 2
+
+# Optimization
+optim: adam
+learning_rate: 2
+adam_beta2: 0.998
+decay_method: noam
+accum_count: 2
+warmup_steps: 8000
+label_smoothing: 0.1
+max_grad_norm: 0
+param_init: 0
+param_init_glorot: true
+normalization: tokens
+
+# Model
+encoder_type: transformer
+decoder_type: transformer
+position_encoding: true
+layers: 6  # Same for enc/dec
+heads: 8
+rnn_size: 512
+word_vec_size: 512
+transformer_ff: 2048
+dropout: 0.1
+share_embeddings: True
+
+# Logs
+log_file: /home/alexis.allemann/workspace/unisub/experiments/WP1/1_Benchmarking/experiments/v2/AAL_nrc-cnrc_system5-topk10/logs/train_log
+log_file_level: WARNING
+tensorboard: true
+tensorboard_log_dir: /home/alexis.allemann/workspace/unisub/experiments/WP1/1_Benchmarking/experiments/v2/AAL_nrc-cnrc_system5-topk10/logs
